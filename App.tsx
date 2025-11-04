@@ -1,45 +1,20 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
+if (__DEV__) {
+  require('./ReactotronConfig.js');
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+import React from 'react';
+import { Provider } from 'react-redux';
+import { SafeAreaView, StatusBar } from 'react-native';
+import { store } from './src/store';
+import TodoListScreen from './src/screens/TodoListScreen';
+const App = () => {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <Provider store={store}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" />
+        <TodoListScreen />
+      </SafeAreaView>
+    </Provider>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
+};
 export default App;
