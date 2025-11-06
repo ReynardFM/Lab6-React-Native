@@ -1,97 +1,82 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Redux Todo App
 
-# Getting Started
+A simple Todo application for React Native, built with Redux for state management.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+*   Add, start, complete, and delete todos.
+*   Filter todos by status: All, Pending, Ongoing, Completed.
+*   Track your progress with a completion percentage.
+*   Redux state management with Redux Toolkit.
+*   Debugging with Reactotron.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Getting Started
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### Prerequisites
 
-```sh
-# Using npm
-npm start
+*   [Node.js](https://nodejs.org/) (LTS version recommended)
+*   [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
+*   [React Native development environment](https://reactnative.dev/docs/environment-setup)
 
-# OR using Yarn
-yarn start
-```
+### Installation
 
-## Step 2: Build and run your app
+1.  Clone the repository:
+    ```sh
+    git clone https://github.com/ReynardFM/Lab6-React-Native.git
+    ```
+2.  Navigate to the project directory:
+    ```sh
+    cd Lab6-React-Native
+    ```
+3.  Install the dependencies:
+    ```sh
+    npm install
+    # or
+    yarn install
+    ```
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### Running the App
 
-### Android
+1.  Start the Metro bundler:
+    ```sh
+    npm start
+    # or
+    yarn start
+    ```
+2.  In a new terminal, run the app on your desired platform:
+    *   **Android:**
+        ```sh
+        npm run android
+        # or
+        yarn android
+        ```
+    *   **iOS:**
+        ```sh
+        npm run ios
+        # or
+        yarn ios
+        ```
 
-```sh
-# Using npm
-npm run android
+## Usage
 
-# OR using Yarn
-yarn android
-```
+Once the application is running on your device or emulator:
 
-### iOS
+1.  **Add a Todo:** Type your task in the input field and tap the "Add" button.
+2.  **Start a Todo:** For a "pending" task, tap the "play" icon next to it to mark it as "ongoing".
+3.  **Complete/Uncomplete a Todo:** For "ongoing" or "completed" tasks, tap the checkbox to toggle its completion status.
+4.  **Delete a Todo:** Tap the "trash" icon next to any task. You will be prompted to confirm the deletion.
+5.  **Filter Todos:** Use the filter tabs ("All", "Pending", "Ongoing", "Completed") at the top to view tasks by their status.
+6.  **Track Progress:** The header displays the total number of tasks, active tasks, completed tasks, and the completion percentage.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## Debugging with Reactotron
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Reactotron is configured to help you debug the Redux state and actions.
 
-```sh
-bundle install
-```
+1.  **Ensure Reactotron is Running:** Start the Reactotron desktop application on your computer.
+2.  **Connect Your App:** When your React Native app starts, it should automatically connect to Reactotron.
+3.  **Monitor Redux State:** In the Reactotron app, you can:
+    *   View all dispatched Redux actions in real-time.
+    *   Inspect the Redux state tree after each action.
+    *   Time travel through your Redux state.
 
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+If your app is not connecting to Reactotron, ensure that your device/emulator and your computer are on the same network, and that Reactotron is allowed through your firewall.
