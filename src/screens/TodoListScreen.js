@@ -26,6 +26,7 @@ const TodoListScreen = () => {
     const totalTodos = todos.length;
     const completedTodos = todos.filter(t => t.completed).length;
     const activeTodos = totalTodos - completedTodos;
+    const completionPercentage = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
     const handleAddTodo = () => {
         if (newTodoText.trim()) {
             dispatch(addTodo(newTodoText.trim()));
@@ -68,7 +69,7 @@ const TodoListScreen = () => {
             <View style={styles.header}>
                 <Text style={styles.title}>Redux Todo App</Text>
                 <Text style={styles.stats}>
-                    {totalTodos} total • {activeTodos} active • {completedTodos} completed
+                    {totalTodos} total • {activeTodos} active • {completedTodos} completed ({completionPercentage}%)
                 </Text>
             </View>
             {/* Add Todo Input */}
