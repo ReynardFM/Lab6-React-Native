@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { addTodo, toggleTodo, deleteTodo, setFilter } from '../store/todosSlice';
+import { addTodo, startTodo, toggleTodo, deleteTodo, setFilter } from '../store/todosSlice';
 const TodoListScreen = () => {
     const dispatch = useDispatch();
     const todos = useSelector(state => state.todos.items);
@@ -18,51 +18,72 @@ const TodoListScreen = () => {
     const [newTodoText, setNewTodoText] = useState('');
     // Filter todos based on current filter
     const filteredTodos = todos.filter(todo => {
-        if (filter === 'active') return !todo.completed;
-        if (filter === 'completed') return todo.completed;
+        if (filter === 'pending') return todo.status === 'pending';
+        if (filter === 'ongoing') return todo.status === 'ongoing';
+        if (filter === 'completed') return todo.status === 'completed';
         return true;
     });
     // Calculate stats
     const totalTodos = todos.length;
-    const completedTodos = todos.filter(t => t.completed).length;
+    const completedTodos = todos.filter(t => t.status === 'completed').length;
     const activeTodos = totalTodos - completedTodos;
     const completionPercentage = totalTodos > 0 ? Math.round((completedTodos / totalTodos) * 100) : 0;
+
     const handleAddTodo = () => {
         if (newTodoText.trim()) {
             dispatch(addTodo(newTodoText.trim()));
             setNewTodoText('');
         }
     };
+
+    const handleStartTodo = (id) => {
+        dispatch(startTodo(id));
+    };
+
     const handleToggleTodo = (id) => {
         dispatch(toggleTodo(id));
     };
+
     const handleDeleteTodo = (id) => {
+        const confirmDelete = () => {
+            dispatch(deleteTodo(id));
+        };
+
         Alert.alert(
             'Delete Todo',
             'Are you sure?',
             [
                 { text: 'Cancel', style: 'cancel' },
-                { text: 'Delete', onPress: () => dispatch(deleteTodo(id)), style: 'destructive' },
+                { text: 'Delete', onPress: confirmDelete, style: 'destructive' },
             ]
         );
     };
+
     const renderTodo = ({ item }) => (
         <View style={styles.todoItem}>
-            <TouchableOpacity onPress={() => handleToggleTodo(item.id)} style={styles.checkbox}>
-                <Icon
-                    name={item.completed ? 'check-box' : 'check-box-outline-blank'}
-                    size={24}
-                    color={item.completed ? '#4CAF50' : '#999'}
-                />
-            </TouchableOpacity>
-            <Text style={[styles.todoText, item.completed && styles.todoTextCompleted]}>
+            {item.status !== 'pending' && (
+                <TouchableOpacity onPress={() => handleToggleTodo(item.id)} style={styles.checkbox}>
+                    <Icon
+                        name={item.status === 'completed' ? 'check-box' : 'check-box-outline-blank'}
+                        size={24}
+                        color={item.status === 'completed' ? '#4CAF50' : '#999'}
+                    />
+                </TouchableOpacity>
+            )}
+            <Text style={[styles.todoText, item.status === 'completed' && styles.todoTextCompleted, item.status === 'ongoing' && styles.todoTextOngoing]}>
                 {item.text}
             </Text>
+            {item.status === 'pending' && (
+                <TouchableOpacity onPress={() => handleStartTodo(item.id)} style={styles.startButton}>
+                    <Icon name="play-arrow" size={24} color="#2196F3" />
+                </TouchableOpacity>
+            )}
             <TouchableOpacity onPress={() => handleDeleteTodo(item.id)} style={styles.deleteButton}>
                 <Icon name="delete" size={24} color="#f44336" />
             </TouchableOpacity>
         </View>
     );
+
     return (
         <View style={styles.container}>
             {/* Header */}
@@ -72,6 +93,7 @@ const TodoListScreen = () => {
                     {totalTodos} total • {activeTodos} active • {completedTodos} completed ({completionPercentage}%)
                 </Text>
             </View>
+
             {/* Add Todo Input */}
             <View style={styles.inputContainer}>
                 <TextInput
@@ -89,9 +111,10 @@ const TodoListScreen = () => {
                     <Icon name="add" size={24} color="white" />
                 </TouchableOpacity>
             </View>
+
             {/* Filter Buttons */}
             <View style={styles.filterContainer}>
-                {['all', 'active', 'completed'].map((filterType) => (
+                {['all', 'pending', 'ongoing', 'completed'].map((filterType) => (
                     <TouchableOpacity
                         key={filterType}
                         style={[styles.filterButton, filter === filterType && styles.filterButtonActive]}
@@ -102,6 +125,7 @@ const TodoListScreen = () => {
                     </TouchableOpacity>
                 ))}
             </View>
+
             {/* Todo List */}
             <FlatList
                 data={filteredTodos}
@@ -187,7 +211,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#3498db',
     },
     filterText: {
-        fontSize: 14,
+        fontSize: 10,
         color: '#333',
     },
     filterTextActive: {
@@ -220,11 +244,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
     },
+    todoTextOngoing: {
+        color: '#2196F3',
+    },
     todoTextCompleted: {
         textDecorationLine: 'line-through',
         color: '#999',
     },
     deleteButton: {
+        padding: 8,
+    },
+    startButton: {
         padding: 8,
     },
     emptyContainer: {

@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 const initialState = {
     items: [
-        { id: 1, text: 'Learn Redux', completed: false },
-        { id: 2, text: 'Build Todo App', completed: false },
-        { id: 3, text: 'Master State Management', completed: false },
+        { id: 1, text: 'Learn Redux', status: 'pending' },
+        { id: 2, text: 'Build Todo App', status: 'pending' },
+        { id: 3, text: 'Master State Management', status: 'pending' },
     ],
-    filter: 'all', // 'all', 'active', 'completed'
+    filter: 'all', // 'all', 'pending', 'ongoing', 'completed'
 };
+
 const todosSlice = createSlice({
     name: 'todos',
     initialState,
@@ -15,13 +17,23 @@ const todosSlice = createSlice({
             state.items.push({
                 id: Date.now(),
                 text: action.payload,
-                completed: false,
+                status: 'pending',
             });
+        },
+        startTodo: (state, action) => {
+            const todo = state.items.find(t => t.id === action.payload);
+            if (todo) {
+                todo.status = 'ongoing';
+            }
         },
         toggleTodo: (state, action) => {
             const todo = state.items.find(t => t.id === action.payload);
             if (todo) {
-                todo.completed = !todo.completed;
+                if (todo.status === 'completed') {
+                    todo.status = 'pending';
+                } else {
+                    todo.status = 'completed';
+                }
             }
         },
         deleteTodo: (state, action) => {
@@ -32,5 +44,6 @@ const todosSlice = createSlice({
         },
     },
 });
-export const { addTodo, toggleTodo, deleteTodo, setFilter } = todosSlice.actions;
+
+export const { addTodo, startTodo, toggleTodo, deleteTodo, setFilter } = todosSlice.actions;
 export default todosSlice.reducer;
